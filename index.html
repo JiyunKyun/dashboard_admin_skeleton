@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <style>
       body {
         margin: 0;
@@ -30,22 +34,22 @@
         position: fixed;
         top: 65px;
         left: 0;
-        width: 200px;
+        width: 250px; /* Width of the sidebar */
         background-color: #444;
         color: white;
         height: calc(100% - 65px);
         padding-top: 1rem;
         z-index: 1000;
-        transform: translateX(-200px); /* Start hidden */
+        transform: translateX(0);
         transition: transform 0.3s ease;
       }
 
-      .sidebar.show {
-        transform: translateX(0); /* Slide in */
+      .sidebar.hide {
+        transform: translateX(-250px); /* Hidden state */
       }
 
       .content {
-        margin-left: 200px;
+        margin-left: 250px; /* Space for sidebar */
         margin-top: 60px;
         padding: 1rem;
         overflow-y: auto;
@@ -54,18 +58,52 @@
       }
 
       .content.expanded {
-        margin-left: 20px; /* Adjust content margin when sidebar is hidden */
+        margin-left: 20px; /* Adjusted margin when sidebar is hidden */
       }
 
       .sidebar a {
-        display: block;
+        display: flex;
+        align-items: center;
         color: white;
         padding: 0.5rem 1rem;
         text-decoration: none;
+        transition: background-color 0.3s;
       }
 
+      .sidebar a.active,
       .sidebar a:hover {
         background-color: #555;
+      }
+
+      .sidebar i {
+        margin-right: 0.5rem;
+      }
+
+      .dropdown {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dropdown-menu {
+        display: none;
+        background-color: #444;
+        width: 100%; /* Same width as the sidebar */
+        margin-top: 0.5rem; /* Space between dropdown-toggle and dropdown-menu */
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: white;
+        text-decoration: none;
+      }
+
+      .dropdown-menu a:hover {
+        background-color: #555;
+      }
+
+      .dropdown.show .dropdown-menu {
+        display: block;
       }
 
       .toggle-button {
@@ -79,18 +117,19 @@
 
       @media (max-width: 768px) {
         .sidebar {
-          transform: translateX(
-            -200px
-          ); /* Hidden by default on small screens */
+          transform: translateX(-250px); /* Hidden on small screens */
         }
 
-        .content {
-          margin-left: 20px;
+        .sidebar.show {
+          transform: translateX(0); /* Show sidebar on small screens */
+        }
+
+        .content.expanded {
+          margin-left: 0; /* No margin when sidebar is hidden */
         }
       }
     </style>
   </head>
-
   <body>
     <div class="navbar">
       <button class="toggle-button">Toggle Sidebar</button>
@@ -98,11 +137,19 @@
     </div>
 
     <div class="sidebar">
-      <a href="#home">Home</a>
-      <a href="#analytics">Analytics</a>
-      <a href="#users">Users</a>
-      <a href="#settings">Settings</a>
-      <a href="#logout">Logout</a>
+      <a href="#home" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+      <div class="dropdown">
+        <a href="#users" class="dropdown-toggle">
+          <i class="fas fa-users"></i> Users <i class="fas fa-caret-down"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="#user-list">User List</a>
+          <a href="#user-roles">User Roles</a>
+        </div>
+      </div>
+      <a href="#settings"><i class="fas fa-cogs"></i> Settings</a>
+      <a href="#logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="content">
@@ -125,9 +172,60 @@
       const sidebar = document.querySelector(".sidebar");
       const content = document.querySelector(".content");
 
+      // Function to update the sidebar and content based on screen size
+      function updateLayout() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.add("hide");
+          content.classList.add("expanded");
+        } else {
+          sidebar.classList.remove("hide");
+          content.classList.remove("expanded");
+        }
+      }
+
+      // Function to reset sidebar and content state
+      function resetState() {
+        if (window.innerWidth > 768) {
+          sidebar.classList.remove("show");
+          content.classList.remove("expanded");
+        }
+      }
+
+      // Initial check
+      updateLayout();
+
+      // Add event listener for window resize
+      window.addEventListener("resize", () => {
+        updateLayout();
+        resetState(); // Reset state on resize
+      });
+
+      // Toggle sidebar on button click
       toggleButton.addEventListener("click", () => {
-        sidebar.classList.toggle("show");
-        content.classList.toggle("expanded");
+        if (window.innerWidth <= 768) {
+          sidebar.classList.toggle("show");
+          content.classList.toggle("expanded");
+        } else {
+          sidebar.classList.toggle("hide");
+          content.classList.toggle("expanded");
+        }
+      });
+
+      // Handle dropdown toggle
+      document.querySelectorAll(".sidebar .dropdown-toggle").forEach((item) => {
+        item.addEventListener("click", () => {
+          item.parentElement.classList.toggle("show");
+        });
+      });
+
+      // Handle sidebar link activation
+      document.querySelectorAll(".sidebar a").forEach((item) => {
+        item.addEventListener("click", () => {
+          document
+            .querySelectorAll(".sidebar a")
+            .forEach((link) => link.classList.remove("active"));
+          item.classList.add("active");
+        });
       });
     </script>
   </body>
