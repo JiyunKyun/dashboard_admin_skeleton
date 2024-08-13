@@ -28,6 +28,35 @@
         justify-content: space-between;
         align-items: center;
         z-index: 1000;
+        box-sizing: border-box;
+      }
+
+      .navbar .left,
+      .navbar .right {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar .notifications {
+        position: relative;
+        margin-left: 1rem;
+      }
+
+      .navbar .notifications .notification-icon {
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .navbar .notifications .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
       }
 
       .sidebar {
@@ -42,6 +71,7 @@
         z-index: 1000;
         transform: translateX(0);
         transition: transform 0.3s ease;
+        box-sizing: border-box;
       }
 
       .sidebar.hide {
@@ -132,8 +162,17 @@
   </head>
   <body>
     <div class="navbar">
-      <button class="toggle-button">Toggle Sidebar</button>
-      <div>User Profile</div>
+      <div class="left">
+        <button class="toggle-button">Toggle Sidebar</button>
+      </div>
+      <div class="right">
+        <div>User Profile</div>
+        <div class="notifications">
+          <i class="fas fa-envelope notification-icon"></i>
+          <span class="notification-badge">3</span>
+          <!-- Number of unread emails -->
+        </div>
+      </div>
     </div>
 
     <div class="sidebar">
