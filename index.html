@@ -145,17 +145,59 @@
         font-size: 1rem;
       }
 
+      .email-content {
+        display: none;
+        position: absolute;
+        top: 2.5rem;
+        right: 1rem;
+        width: 230px;
+        background-color: white;
+        color: black;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1001;
+      }
+
+      .email-content h3 {
+        margin-top: 0;
+      }
+
+      .email-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .email-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .email-list li:last-child {
+        border-bottom: none;
+      }
+
+      .email-list a {
+        color: black;
+        text-decoration: none;
+      }
+
+      .email-list a:hover {
+        text-decoration: underline;
+      }
+
       @media (max-width: 768px) {
         .sidebar {
           transform: translateX(-250px); /* Hidden on small screens */
         }
 
         .sidebar.show {
-          transform: translateX(0); /* Show sidebar on small screens */
+          transform: translateX(0);
         }
 
         .content.expanded {
-          margin-left: 0; /* No margin when sidebar is hidden */
+          margin-left: 0;
         }
       }
     </style>
@@ -171,6 +213,16 @@
           <i class="fas fa-envelope notification-icon"></i>
           <span class="notification-badge">3</span>
           <!-- Number of unread emails -->
+          <!-- Email content container -->
+          <div class="email-content" id="emailContent">
+            <h3>Recent Emails</h3>
+            <ul class="email-list">
+              <li><a href="#email1">Subject 1</a></li>
+              <li><a href="#email2">Subject 2</a></li>
+              <li><a href="#email3">Subject 3</a></li>
+              <!-- More emails here -->
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -210,6 +262,8 @@
       const toggleButton = document.querySelector(".toggle-button");
       const sidebar = document.querySelector(".sidebar");
       const content = document.querySelector(".content");
+      const emailIcon = document.querySelector(".notification-icon");
+      const emailContent = document.getElementById("emailContent");
 
       // Function to update the sidebar and content based on screen size
       function updateLayout() {
@@ -236,9 +290,8 @@
       // Add event listener for window resize
       window.addEventListener("resize", () => {
         updateLayout();
-        resetState(); // Reset state on resize
+        resetState();
       });
-
       // Toggle sidebar on button click
       toggleButton.addEventListener("click", () => {
         if (window.innerWidth <= 768) {
@@ -265,6 +318,25 @@
             .forEach((link) => link.classList.remove("active"));
           item.classList.add("active");
         });
+      });
+
+      // Toggle email content visibility
+      emailIcon.addEventListener("click", () => {
+        emailContent.style.display =
+          emailContent.style.display === "none" ||
+          emailContent.style.display === ""
+            ? "block"
+            : "none";
+      });
+
+      // Hide email content if clicked outside
+      document.addEventListener("click", (event) => {
+        if (
+          !emailContent.contains(event.target) &&
+          !emailIcon.contains(event.target)
+        ) {
+          emailContent.style.display = "none";
+        }
       });
     </script>
   </body>
