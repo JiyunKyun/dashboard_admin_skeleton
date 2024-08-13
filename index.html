@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #333;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 65px;
+        left: 0;
+        width: 200px;
+        background-color: #444;
+        color: white;
+        height: calc(100% - 65px);
+        padding-top: 1rem;
+        z-index: 1000;
+        transform: translateX(-200px); /* Start hidden */
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.show {
+        transform: translateX(0); /* Slide in */
+      }
+
+      .content {
+        margin-left: 200px;
+        margin-top: 60px;
+        padding: 1rem;
+        overflow-y: auto;
+        height: calc(100% - 60px);
+        transition: margin-left 0.3s ease;
+      }
+
+      .content.expanded {
+        margin-left: 20px; /* Adjust content margin when sidebar is hidden */
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+      }
+
+      .sidebar a:hover {
+        background-color: #555;
+      }
+
+      .toggle-button {
+        background-color: #444;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(
+            -200px
+          ); /* Hidden by default on small screens */
+        }
+
+        .content {
+          margin-left: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <button class="toggle-button">Toggle Sidebar</button>
+      <div>User Profile</div>
+    </div>
+
+    <div class="sidebar">
+      <a href="#home">Home</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#users">Users</a>
+      <a href="#settings">Settings</a>
+      <a href="#logout">Logout</a>
+    </div>
+
+    <div class="content">
+      <h1>Welcome to the Dashboard</h1>
+      <p>This is the main content area of the admin dashboard.</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor
+        nisi vitae ipsum tempor, ut facilisis massa malesuada. Proin tincidunt,
+        ipsum id sollicitudin ultrices, lectus dui aliquam enim, sit amet
+        finibus massa sapien id arcu. Vivamus ultrices, nunc ac cursus luctus,
+        urna leo tincidunt eros, a pharetra risus neque non odio. Phasellus
+        tristique dignissim eros, in consequat mi condimentum id. Praesent
+        commodo ipsum et purus euismod sollicitudin.
+      </p>
+      <!-- Tambahkan konten lebih lanjut di sini -->
+    </div>
+
+    <script>
+      const toggleButton = document.querySelector(".toggle-button");
+      const sidebar = document.querySelector(".sidebar");
+      const content = document.querySelector(".content");
+
+      toggleButton.addEventListener("click", () => {
+        sidebar.classList.toggle("show");
+        content.classList.toggle("expanded");
+      });
+    </script>
+  </body>
+</html>
